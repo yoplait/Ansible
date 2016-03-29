@@ -1,0 +1,104 @@
+# Pre requisites
+
+mkdir ansible-apache
+
+cd ~/ansible-apache/
+
+touch ansible.cfg
+nano ansible.cfg
+
+[defaults]
+hostfile = hosts
+
+touch hosts
+nano hosts
+
+[apache]
+secondary_server_ip ansible_ssh_user=username
+
+# test 
+
+ansible apache -m ping
+ansible apache -m command -a "/bin/echo hello sammy"
+
+nano apache.yml
+
+ansible-playbook apache.yml
+
+ansible-playbook apache.yml --ask-sudo-pass
+
+# idemp.
+
+ansible-playbook apache.yml --ask-sudo-pass
+
+# no changes
+
+# Adding modules
+
+ansible-playbook apache.yml --ask-sudo-pass
+ansible-playbook apache_modules.yml --ask-sudo-pass
+ansible-playbook apache_modules_enable.yml --ask-sudo-pass
+
+
+# chaning configurations
+
+/etc/apache2/ports.conf
+    Listen 80
+
+/etc/apache2/sites-available/000-default.conf
+    <VirtualHost *:80>
+
+
+ansible-playbook apache.yml --ask-sudo-pass
+
+# Configuring Virtual Hosts
+
+<VirtualHost *:8081>
+    ServerAdmin webmaster@example.com
+    ServerName example.com
+    ServerAlias www.example.com
+    DocumentRoot /var/www/example.com
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+touch virtualhost.conf
+nano virtualhost.conf
+
+<VirtualHost *:{{ http_port }}>
+    ServerAdmin webmaster@{{ domain }}
+    ServerName {{ domain }}
+    ServerAlias www.{{ domain }}
+    DocumentRoot /var/www/{{ domain }}
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+
+lineinfile: dest=/etc/apache2/ports.conf regexp="^Listen " line="Listen {{ http_port }}" state=present
+
+lineinfile: dest=/etc/apache2/sites-available/000-default.conf regexp="^<VirtualHost \*:" line="<VirtualHost *:{{ http_port }}>"
+
+
+dest -- The destination file path to save the updated template on the host(s), i.e. /etc/apache2/sites-available/{{ domain }}.conf.
+
+virtualhost.conf
+
+- name: create virtual host file
+  template: src=virtualhost.conf dest=/etc/apache2/sites-available/{{ domain }}.conf
+
+# Enable the Virtual Host
+
+sudo a2ensite example.com
+
+/etc/apache2/sites-enabled/
+
+- name: a2ensite {{ domain }}
+  command: a2ensite {{ domain }}
+  notify:
+  - restart apache2
+
+
+# final 
+
+ansible-playbook apache_modules_enable_configuration_variables_final.yml --ask-sudo-pass
