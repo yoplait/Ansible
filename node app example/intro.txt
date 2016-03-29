@@ -1,0 +1,22 @@
+# SSH into app1 and app2
+
+cd /var/www/node-hello-world
+
+git pull the latest code
+
+# to restart the app
+
+systemctl reload node-sample 
+
+
+
+# or
+
+ansible-playbook -i [inventory file] app.yml
+
+# and 
+
+ansible-playbook -i production deploy.yml
+
+
+

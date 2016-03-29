@@ -1,0 +1,7 @@
+{
+  "name": "node-sample",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dickeyxxx/node-sample.git"
+  }
+}

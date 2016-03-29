@@ -1,0 +1,14 @@
+---
+- hosts: app
+
+  tasks:
+    - name: update repo
+      git: repo=https://github.com/dickeyxxx/node-hello-world version=master dest=/var/www/node-hello-world
+      sudo: yes
+      sudo_user: web
+      notify:
+        - reload node-sample
+
+  handlers:
+    - name: reload node-sample
+      service: name=node-sample state=reloaded

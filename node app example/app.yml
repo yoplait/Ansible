@@ -1,0 +1,38 @@
+---
+- hosts: app
+
+  tasks:
+    - name: Install yum packages
+      yum: name={{item}} state=latest
+      with_items:
+        - git
+        - vim
+        - nodejs
+        - npm
+        - nano
+
+    - name: install n (node version installer/switcher)
+      npm: name=n state=present global=yes
+
+    - name: install the latest stable version of node
+      shell: n stable
+
+    - name: Create web user
+      user: name=web
+            createhome=yes 
+            comment="My User" 
+            group=wheel
+            #password=wheel
+            state=present   
+            
+    - name: Create project folder
+      file: path=/var/www group=web owner=web mode=755 state=directory
+
+    - name: Add systemd conf
+      template: src=systemd.service.j2 dest=/etc/systemd/system/node-sample.service
+      notify:
+        - enable node-sample
+
+  handlers:
+    - name: enable node-sample
+      shell: systemctl enable node-sample

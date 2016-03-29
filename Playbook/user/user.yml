@@ -1,0 +1,20 @@
+---
+- hosts: all
+  sudo: yes
+
+  tasks:
+  - name: Add deployment user
+    user: name=myuser 
+          createhome=yes 
+          comment="My User" 
+          group=wheel
+          #password=wheel
+          state=present   
+    register: newuser
+
+  - name: generate random password for user only on creation
+    shell: /usr/bin/openssl rand -base64 32 | passwd --stdin deployer
+    when: newuser.changed
+
+  - name: Placing key
+    authorized_key: user=myuser key="{{ lookup('file', './files/authorized_keys.myuser.pub') }}"
