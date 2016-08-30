@@ -1,6 +1,8 @@
 node-sample
 ===========
 
+https://github.com/dickeyxxx/node-sample
+
 A sample node app to demonstrate how to use node in production with ansible.
 
 To use:

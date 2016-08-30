@@ -1,0 +1,11 @@
+---
+- hosts: CI-BUILDS
+  #remote_user: perezjc
+  #become: yes
+  #become_user: root
+  become_method: sudo
+  gather_facts: yes
+  tasks:
+  - name: "sudo to root"
+    command: /usr/bin/whoami
+    #command: touch /tmp/eloy

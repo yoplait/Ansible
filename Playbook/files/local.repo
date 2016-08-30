@@ -1,0 +1,9 @@
+[rhel-local]
+name=RHEL 7 Repo
+baseurl=http://am-yum-01/rhel/7/
+gpgcheck=0
+enabled=1
+
+
+
+

@@ -1,0 +1,7 @@
+---
+- hosts: CI-BUILDS
+  sudo: yes
+  gather_facts: no
+  tasks:
+  - name: "sudo to root"
+    command: /usr/bin/whoami

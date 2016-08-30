@@ -1,0 +1,7 @@
+---
+- hosts: CI-BUILDS
+  tasks:
+    - name: Ensure git is installed
+      package: name=git state=installed
+    - name: install (or upgrade to) the latest version of htop
+      package: name=htop state=installed
