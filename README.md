@@ -22,3 +22,6 @@ curious:	[pepa](pi)
 
 
 * `if (!grep -q 127.0.0.1 /etc/hosts); then echo "127.0.0.1 localhost" >> /etc/hosts; fi`
+
+Thanks!
+JC
