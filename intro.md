@@ -378,18 +378,40 @@ ansible eu-fcpp-b001 -m ping -vvvv
 ansible eu-fcpp-b004 -m ping -vvvvv
 
 ansible CI-BUILDS -m ping -vvvvvv
+ansible CI-BUILDS-TEST -m ping -vvvvvv
 
 	
 ansible eu-fcpp-b001 -m ping -vvvvv --ask-become-pass
+ansible eu-fcpp-b002 -m ping -vvvvv --ask-become-pass
+
 ssh -i /home/ansible/.ssh/id_rsa ansible@eu-fcpp-b001
+
+!t4yc1Bw9DKQSf!t
+tomatesOM6M98!f71568999fdsafdasa
 
 
 ansible all -m command --args "uptime"
 
 ansible-playbook all ansible/installs/installs.yml -vvvvvvv --ask-become-pass
 
+ansible-playbook [CI-BUILDS-TEST] ansible/installs/files.yml -vvvvvvv --ask-become-pass
+ansible-playbook ansible/files/files.yml CI-BUILDS-TEST -vvvvvvv --ask-become-pass --list-hosts
+ansible-playbook ansible/files/files.yml -vvvvvvv --ask-become-pass --list-hosts
+
+ansible-playbook ansible/files/files.yml --extra-vars "target=eu-fcpp-b001" --list-hosts
+ansible-playbook ansible/files/files.yml --extra-vars "target=CI-BUILDS-TEST" --list-hosts
+ansible-playbook ansible/files/files.yml --extra-vars "target=CI-BUILDS" --list-hosts
+
+ansible-playbook ansible/files/files.yml --list-hosts
+ansible-playbook ansible/files/files.yml --check
+
+ansible-playbook ansible/files/files.yml --extra-vars "target=eu-fcpp-b001" --ask-become-pass
+ansible-playbook ansible/files/files.yml --extra-vars "target=CI-BUILDS" --ask-become-pass
+
+ansible-playbook -i "eu-fcpp-b001," ansible/files/files.yml 
 
 #
 # copy from my desktop to server
 #
+
 scp -r ansible ansible@eu-fcpp-a002:/home/ansible/

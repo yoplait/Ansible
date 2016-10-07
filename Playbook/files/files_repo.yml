@@ -1,0 +1,26 @@
+---
+- hosts: "{{ target }}"
+  #remote_user: perezjc
+  become: yes
+  become_user: root
+  become_method: sudo
+  gather_facts: yes
+  tasks: 
+   - name: local.repo
+     copy: src=/home/ansible/ansible/files/local.repo 
+          dest=/etc/yum.repos.d/local.repo 
+          owner=root 
+          group=root 
+          mode=0644
+   - name: my.conf
+     copy: src=/home/ansible/ansible/files/my.cnf 
+          dest=/etc/my.conf
+          owner=root 
+          group=root 
+          mode=0644
+   - name: mongod.conf
+     copy: src=/home/ansible/ansible/files/mongod.conf
+          dest=/etc/mongod.conf
+          owner=root 
+          group=root 
+          mode=0644
